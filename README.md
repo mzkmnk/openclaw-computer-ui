@@ -1,57 +1,57 @@
 # openclaw-computer-ui
 
-A small, self-hostable “Computer-like” UI and job runner architecture built on top of **OpenClaw**.
+OpenClaw 上に「Perplexity Computer 風」の体験（タスク一覧 → プラン → 承認 → 実行 → 成果物）を作るための、セルフホスト可能な UI + 実行基盤のプロトタイプです。
 
-Goal: get a Perplexity Computer-style experience (task list → plan → approvals → execution → artifacts) **without** a costly subscription, by orchestrating:
+狙い：高額なサブスクに頼らず、以下を組み合わせて “Computerっぽい” 体験を実現します。
 
-- a **web UI** (`/computer`)
-- an **API** (`/api/computer`)
-- a **runner** (OpenClaw on the host, executing inside Docker)
-- a minimal **Postgres** DB for task metadata
+- **Web UI**（`/computer`）
+- **API**（`/api/computer`）
+- **Runner**（ホスト上の OpenClaw が Docker サンドボックス内で実行）
+- タスクメタデータ保存用の **Postgres**（最小構成）
 
-This repo starts with docs + an MVP skeleton.
+このリポジトリは、まず **ドキュメント＋MVPの骨組み**から始めます。
 
-## What this is (MVP scope)
+## これは何？（MVPスコープ）
 
-- Create tasks from a dedicated UI
-- Store tasks/events/approvals in Postgres
-- Stream/attach logs and artifacts
-- “Approval gate” for dangerous actions (e.g. `terraform apply`, deploy)
-- Runner polls queued tasks and executes inside Docker sandbox
+- 専用UIからタスクを作成
+- タスク / イベント / 承認情報を Postgres に保存
+- ログや成果物（artifact）を紐付け
+- 危険操作（例：`terraform apply`、本番デプロイ）には **承認ゲート**を挟む
+- Runner がキュー（queued）のタスクを拾い、Docker サンドボックスで実行
 
-## What this is not
+## これは何ではない？
 
-- A multi-tenant SaaS
-- A billing/subscription system
-- A 400+ connector platform
+- マルチテナントSaaS
+- 課金・サブスクシステム
+- 400+コネクタの統合プラットフォーム
 
-## Architecture (high level)
+## アーキテクチャ（概要）
 
-- **UI**: `/computer` (Next.js assumed, but implementation can vary)
+- **UI**: `/computer`（Next.js想定。実装は後で差し替え可能）
 - **API**: `/api/computer/*`
-- **DB**: Postgres (docker-compose)
-- **Runner**: OpenClaw (host) → Docker (`docker compose`) → AWS (AssumeRole)
+- **DB**: Postgres（docker-compose）
+- **Runner**: OpenClaw（host）→ Docker（`docker compose`）→ AWS（AssumeRole）
 
-See:
-- `docs/spec.md` for requirements and API/DB design
+詳細：
+- 要件 / API / DB は `docs/spec.md`
 
-## Local dev (planned)
+## ローカル開発（予定）
 
-> The following commands will work once the app skeleton is implemented.
+> アプリのスケルトン実装後に動作します。
 
 ```bash
 cp .env.example .env
 docker compose up -d
-# open http://localhost:3000/computer
+# http://localhost:3000/computer を開く
 ```
 
-## Deployment model (planned)
+## デプロイ方針（予定）
 
-- Dev/Stg: automatic
-- Prod: manual approval gate
+- dev / stg：自動
+- prod：承認ゲートを挟む
 
-Runner uses **AWS AssumeRole** (no long-lived access keys).
+Runner は **AWS AssumeRole** を使い、長期のアクセスキーは置きません。
 
-## License
+## ライセンス
 
-TBD (default: all rights reserved until we decide).
+未定（決めるまでの間は all rights reserved 扱い）。
