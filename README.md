@@ -51,7 +51,8 @@ pnpm api:dev
 # => http://localhost:4000/docs (Swagger)
 ```
 
-`CORS_ORIGIN` はデフォルトで `http://localhost:3000` を許可します。
+`CORS_ORIGIN` はカンマ区切りで複数指定できます（`*` は禁止）。
+Swagger は `NODE_ENV !== production` もしくは `SWAGGER_ENABLED=true` のとき有効です。
 
 ## デプロイ方針（予定）
 
