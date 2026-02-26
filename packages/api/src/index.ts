@@ -1,1 +1,1 @@
-export const apiName = 'api';
+export { AppModule } from './app.module.js';
