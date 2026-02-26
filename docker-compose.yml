@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: openclaw-computer-postgres
+    environment:
+      POSTGRES_DB: computer
+      POSTGRES_USER: computer
+      POSTGRES_PASSWORD: computer
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U computer -d computer"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # app:
+  #   build: .
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
