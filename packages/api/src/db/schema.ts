@@ -1,18 +1,38 @@
 import {
+  index,
   jsonb,
+  pgEnum,
   pgTable,
   text,
   timestamp,
-  uuid,
-  index
+  uuid
 } from 'drizzle-orm/pg-core';
+
+export const taskModeEnum = pgEnum('task_mode', ['manual', 'auto']);
+export const taskStatusEnum = pgEnum('task_status', [
+  'queued',
+  'running',
+  'succeeded',
+  'failed',
+  'cancelled'
+]);
+export const approvalStatusEnum = pgEnum('approval_status', [
+  'pending',
+  'approved',
+  'rejected'
+]);
+export const approvalActionEnum = pgEnum('approval_action', [
+  'run',
+  'deploy',
+  'terraform_apply'
+]);
 
 export const tasks = pgTable('tasks', {
   id: uuid('id').defaultRandom().primaryKey(),
   title: text('title').notNull(),
   prompt: text('prompt').notNull(),
-  mode: text('mode').notNull(),
-  status: text('status').notNull(),
+  mode: taskModeEnum('mode').notNull(),
+  status: taskStatusEnum('status').notNull(),
   runnerHint: jsonb('runner_hint'),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
@@ -43,8 +63,8 @@ export const approvals = pgTable(
     taskId: uuid('task_id')
       .notNull()
       .references(() => tasks.id, { onDelete: 'cascade' }),
-    action: text('action').notNull(),
-    status: text('status').notNull(),
+    action: approvalActionEnum('action').notNull(),
+    status: approvalStatusEnum('status').notNull(),
     requestedAt: timestamp('requested_at', { withTimezone: true })
       .defaultNow()
       .notNull(),
