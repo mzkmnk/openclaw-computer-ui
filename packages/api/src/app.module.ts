@@ -10,6 +10,9 @@ import { HealthController } from './health.controller.js';
       isGlobal: true,
       validationSchema: Joi.object({
         API_PORT: Joi.number().port().default(4000),
+        DATABASE_URL: Joi.string()
+          .uri({ scheme: ['postgres', 'postgresql'] })
+          .required(),
         CORS_ORIGIN: Joi.string().default('http://localhost:3000'),
         SWAGGER_ENABLED: Joi.boolean()
           .truthy('true')

@@ -53,6 +53,20 @@ pnpm api:dev
 # => http://localhost:4000/docs (Swagger)
 ```
 
+### DB migration（Drizzle）
+
+```bash
+# schema から migration 生成
+pnpm -C packages/api db:generate
+
+# migration 適用
+pnpm -C packages/api db:migrate
+
+# 最小insert確認
+pnpm -C packages/api db:smoke
+```
+
+`DATABASE_URL` 未設定/不正時は API 起動時に fail-fast で停止します。
 `CORS_ORIGIN` はカンマ区切りで複数指定できます（`*` は禁止）。
 Swagger は `NODE_ENV !== production` もしくは `SWAGGER_ENABLED=true` のとき有効です。
 
