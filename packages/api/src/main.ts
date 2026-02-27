@@ -6,6 +6,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module.js';
+import { assertDatabaseConnection } from './db/health.js';
 
 function parseCorsOrigins(value: string): string[] {
   const origins = value
@@ -63,6 +64,9 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup('docs', app, document);
   }
+
+  const databaseUrl = config.getOrThrow<string>('DATABASE_URL');
+  await assertDatabaseConnection(databaseUrl);
 
   const port = config.getOrThrow<number>('API_PORT');
   await app.listen(port);
