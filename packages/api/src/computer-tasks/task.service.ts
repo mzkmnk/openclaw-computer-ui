@@ -16,14 +16,8 @@ export class TaskService {
     private readonly taskRepository: TaskRepository
   ) {}
 
-  async createTask(input: Omit<CreateTaskInput, 'title'> & { title?: string }) {
-    const title = input.title?.trim() || this.makeDefaultTitle(input.prompt);
-
-    return this.taskRepository.create({
-      title,
-      prompt: input.prompt,
-      mode: input.mode
-    });
+  async createTask(input: CreateTaskInput) {
+    return this.taskRepository.create(input);
   }
 
   async listTasks(status?: TaskStatus): Promise<TaskEntity[]> {
@@ -39,13 +33,5 @@ export class TaskService {
       });
     }
     return task;
-  }
-
-  private makeDefaultTitle(prompt: string): string {
-    const text = prompt.trim();
-    if (text.length <= 64) {
-      return text;
-    }
-    return `${text.slice(0, 61)}...`;
   }
 }

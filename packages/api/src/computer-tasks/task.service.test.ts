@@ -19,7 +19,7 @@ function mockTask(overrides: Partial<TaskEntity> = {}): TaskEntity {
 }
 
 describe('TaskService', () => {
-  it('creates task with queued status via repository', async () => {
+  it('creates task with provided title via repository', async () => {
     const created = mockTask();
     const repository: TaskRepository = {
       create: vi.fn().mockResolvedValue(created),
@@ -29,12 +29,13 @@ describe('TaskService', () => {
     const service = new TaskService(repository);
 
     await service.createTask({
+      title: 'manual title',
       prompt: 'run smoke',
       mode: 'manual'
     });
 
     expect(repository.create).toHaveBeenCalledWith({
-      title: 'run smoke',
+      title: 'manual title',
       prompt: 'run smoke',
       mode: 'manual'
     });
