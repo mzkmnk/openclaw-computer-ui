@@ -27,14 +27,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm -r lint
-
-      - name: Test
-        run: pnpm -r test
-
-      - name: Build (api)
+      - name: 'API: build'
         run: pnpm api:build
 
-      - name: Format check
+      - name: 'Quality: lint'
+        run: pnpm -r lint
+
+      - name: 'Quality: test'
+        run: pnpm -r test
+
+      - name: 'Quality: format'
         run: pnpm format:check
