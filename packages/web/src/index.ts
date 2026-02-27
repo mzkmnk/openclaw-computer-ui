@@ -1,1 +1,1 @@
-export const webName = 'web';
+export { App } from './App.js';
