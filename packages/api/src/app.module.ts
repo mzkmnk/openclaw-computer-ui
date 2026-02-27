@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 
+import { TaskController } from './computer-tasks/task.controller.js';
+import { DrizzleTaskRepository } from './computer-tasks/task.repository.js';
+import { TASK_REPOSITORY, TaskService } from './computer-tasks/task.service.js';
 import { HealthController } from './health.controller.js';
 
 @Module({
@@ -24,6 +27,13 @@ import { HealthController } from './health.controller.js';
       })
     })
   ],
-  controllers: [HealthController]
+  controllers: [HealthController, TaskController],
+  providers: [
+    TaskService,
+    {
+      provide: TASK_REPOSITORY,
+      useClass: DrizzleTaskRepository
+    }
+  ]
 })
 export class AppModule {}
