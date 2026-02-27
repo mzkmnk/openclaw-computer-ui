@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { apiName } from '../src/index.js';
 
-describe('api', () => {
-  it('exports package name', () => {
-    expect(apiName).toBe('api');
+import { HealthController } from '../src/health.controller.js';
+
+describe('HealthController', () => {
+  it('returns ok status', () => {
+    const controller = new HealthController();
+    expect(controller.getHealth()).toEqual({ status: 'ok' });
   });
 });
