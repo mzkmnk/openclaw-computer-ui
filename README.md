@@ -53,6 +53,13 @@ pnpm api:dev
 # => http://localhost:4000/docs (Swagger)
 ```
 
+### Web（Vite + React + TS）を起動
+
+```bash
+pnpm web:dev
+# => http://localhost:3000
+```
+
 ### DB migration（Drizzle）
 
 ```bash
