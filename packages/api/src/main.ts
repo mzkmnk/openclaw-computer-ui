@@ -6,6 +6,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module.js';
+import { HttpExceptionFilter } from './common/http-exception.filter.js';
 import { assertDatabaseConnection } from './db/health.js';
 
 function parseCorsOrigins(value: string): string[] {
@@ -51,6 +52,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true
     })
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const nodeEnv = config.getOrThrow<string>('NODE_ENV');
   const swaggerEnabled =
